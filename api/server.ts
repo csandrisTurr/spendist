@@ -1,7 +1,8 @@
+import { Database, sqlite3 } from "sqlite3";
+import express from 'express';
+import cors from 'cors';
+
 require('dotenv').config();
-const express = require('express');
-var mysql = require('mysql');
-const cors = require('cors');
 const app = express();
 const port = process.env.PORT;
 
@@ -10,14 +11,26 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors());
 app.use(express.json());
 
-var pool  = mysql.createPool({
-    connectionLimit : 10,
-    host            : process.env.DBHOST,
-    user            : process.env.DBUSER,
-    password        : process.env.DBPASS,
-    database        : process.env.DBNAME,
-    timezone: 'UTC'
-  });
+const db: Database = new Database('db.sqlite3');
+db.on('open', () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      ID INTEGER PRIMARY KEY,
+      name VARCHAR(32),
+      email VARCHAR(64),
+      passwd VARCHAR(64)
+    );
+
+    CREATE TABLE IF NOT EXISTS items (
+      ID INTEGER PRIMARY KEY,
+      userID INT,
+      date DATE,
+      type VARCHAR(5),
+      amount INT(5),
+      tag VARCHAR(32)
+    );
+    `);
+});
 
 // ENDPOINTS
 
@@ -30,7 +43,7 @@ app.post('/logincheck', (req, res)=>{
   let value1 = req.body.email;
   let value2 = req.body.passwd;
 
-  pool.query(`SELECT * FROM ${table} WHERE ${field1}='${value1}' AND ${field2}='${value2}'`, (err, results)=>{
+  db.run(`SELECT * FROM ${table} WHERE ${field1}='${value1}' AND ${field2}='${value2}'`, (err, results)=>{
     sendResults(table, err, results, req, res, 'logincheck from');
   });
 });
@@ -42,7 +55,7 @@ app.get('/', function (req, res) {
 // GET all records
 app.get('/:table', (req, res) => {
   let table = req.params.table;
-    pool.query(`SELECT * FROM ${table}`, (err, results) => {
+    db.all(`SELECT * FROM ${table}`, (err, results) => {
       sendResults(table, err, results, req, res, 'sent from');
     });
 });
@@ -52,7 +65,7 @@ app.get('/:table/:id', (req, res) => {
   let table = req.params.table;
   let id = req.params.id;
   
-  pool.query(`SELECT * FROM ${table} WHERE ID=${id}`, (err, results) => {
+  db.all(`SELECT * FROM ${table} WHERE ID=${id}`, (err, results) => {
     sendResults(table, err, results, req, res, 'sent from');
   });
 });
@@ -68,7 +81,7 @@ app.get('/:table/:field/:op/:value', (req, res)=>{
     value = `%${value}%`;
   }
 
-  pool.query(`SELECT * FROM ${table} WHERE ${field}${op}'${value}'`, (err, results)=>{
+  db.all(`SELECT * FROM ${table} WHERE ${field}${op}'${value}'`, (err, results)=>{
     sendResults(table, err, results, req, res, 'sent from');
   });
 });
@@ -80,7 +93,7 @@ app.post('/:table', (req, res)=>{
   let values = '"'+ Object.values(req.body).join('","') +'"';
   let fields = Object.keys(req.body).join(',');
 
-  pool.query(`INSERT INTO ${table} (${fields}) VALUES(${values})`, (err, results)=>{
+  db.all(`INSERT INTO ${table} (${fields}) VALUES(${values})`, (err, results)=>{
     sendResults(table, err, results, req, res, 'insert into');
   });
 });
@@ -100,14 +113,14 @@ app.patch('/:table/:field/:op/:value', (req, res) => {
   let fields = Object.keys(req.body);
 
   let sql = '';
-  for(i=0; i< values.length; i++){
+  for(let i = 0; i< values.length; i++){
     sql += fields[i] + `='` + values[i] + `'`;
     if (i< values.length-1) {
       sql += ',';
     } 
   }
 
-  pool.query(`UPDATE ${table} SET ${sql} WHERE ${field}${op}'${value}'`, (err, results)=>{
+  db.all(`UPDATE ${table} SET ${sql} WHERE ${field}${op}'${value}'`, (err, results)=>{
     sendResults(table, err, results, req, res, 'updated in');
   });
 
@@ -118,7 +131,7 @@ app.delete('/:table/:id', (req, res) => {
   let table = req.params.table;
   let id = req.params.id;
   
-  pool.query(`DELETE FROM ${table} WHERE ID=${id}`, (err, results) => {
+  db.all(`DELETE FROM ${table} WHERE ID=${id}`, (err, results) => {
     sendResults(table, err, results, req, res, 'sent from');
   });
 });
@@ -134,7 +147,7 @@ app.delete('/:table/:field/:op/:value', (req, res) => {
     value = `%${value}%`;
   }
 
-  pool.query(`DELETE FROM ${table} WHERE ${field}${op}'${value}'`, (err, results) => {
+  db.all(`DELETE FROM ${table} WHERE ${field}${op}'${value}'`, (err, results) => {
     sendResults(table, err, results, req, res, 'deleted from');
   }); 
 });
@@ -142,24 +155,24 @@ app.delete('/:table/:field/:op/:value', (req, res) => {
 // DELETE all records from table
 app.delete('/:table', (req, res) => {
   let table = req.params.table;
-  pool.query(`DELETE FROM ${table}`, (err, results) => {
+  db.all(`DELETE FROM ${table}`, (err, results) => {
     sendResults(table, err, results, req, res, 'deleted from');
   }); 
 });
 
 // send results to the client
-function sendResults(table, err, results, req, res, msg){
+function sendResults(table: string, err: any, results: any, req: any, res: any, msg: string){
   if (err){
     console.log(req.socket.remoteAddress + ' >> ' + err.sqlMessage);
     res.status(500).send(err.sqlMessage);
   }else{
-    console.log(req.socket.remoteAddress + ' >> ' +results.length + ` record(s) ${msg} ${table} table.`);
+    console.log(`${req.socket.remoteAddress} >> ${results.length} record(s) ${msg} ${table} table.`);
     res.status(200).send(results);
   }
 }
 
 // change operator value
-function getOperator(op){
+function getOperator(op: string){
   switch(op){
     case 'eq': {op = '='; break}
     case 'lt': {op = '<'; break}
