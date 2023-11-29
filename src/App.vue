@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import Sidebar from './components/Sidebar.vue';
+
+function isAuthenticated(): boolean {
+  
+}
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
-  </header>
+  <Sidebar />
 
-  <RouterView />
+  <RouterView class="p-4" />
 </template>
 
 <style scoped>
