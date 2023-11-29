@@ -2,7 +2,15 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
-  const loggedIn = ref(false);
+  const currentUser = ref(null);
 
-  return { loggedIn };
+  function setUser(user: any) {
+    currentUser.value = user;
+  }
+
+  function loggedIn(): boolean {
+    return currentUser.value != null;
+  }
+
+  return { setUser, loggedIn };
 })
