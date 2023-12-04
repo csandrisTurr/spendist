@@ -20,7 +20,7 @@ const routes = computed(() => router.getRoutes().filter(x => {
 
 <template>
     <nav class="flex flex-col border-r-zinc-800 border-r-[1px] p-4 gap-4 min-w-[200px]">
-        <span class="text-emerald-500 font-mono font-bold text-2xl w-full text-center">spendist</span>
+        <span class="text-emerald-500 font-mono font-bold text-3xl w-full text-center title">spendist</span>
         <hr class="border-zinc-700 w-5/6 self-center">
         <div class="flex flex-col gap-2">
             <RouterLink
@@ -37,4 +37,9 @@ const routes = computed(() => router.getRoutes().filter(x => {
 </template>
 
 <style lang="scss" scope>
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600&display=swap');
+
+.title {
+    font-family: 'Comfortaa', sans-serif;
+}
 </style>
