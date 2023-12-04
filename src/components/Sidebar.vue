@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user';
 import router from '@/router';
 
 const userStore = useUserStore();
-const classes = "flex items-center gap-2 px-4 py-2 rounded-md text-zinc-300 ease-in-out hover:bg-zinc-900 duration-300 text-lg";
+const classes = "flex items-center gap-2 px-4 py-2 rounded-md ease-in-out duration-300 text-lg";
 
 function capitalize(str: string): string {
     return `${str[0].toUpperCase()}${str.slice(1)}`;
@@ -34,6 +34,7 @@ function logout() {
                 :key="route.name"
                 :to="route.path"
                 :class="classes"
+                class="hover:bg-zinc-900 text-zinc-300"
             >
                 <Icon>{{ route.meta['iconOverride'] || route.name }}</Icon>
                 <span>{{ capitalize(route.name as string) }}</span>
@@ -41,7 +42,7 @@ function logout() {
             <span 
                 v-if="userStore.loggedIn()"
                 :class="classes"
-                class="text-red-400 hover:bg-red-400/10 cursor-pointer justify-self-end mt-auto"
+                class="-text-zinc-300 text-red-400 hover:bg-red-400/10 cursor-pointer justify-self-end mt-auto"
             >
                 <Icon>logout</Icon>
                 <span @click="logout">Log out</span>
