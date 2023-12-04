@@ -23,6 +23,7 @@ const router = createRouter({
       component: RegisterView,
       meta: {
         public: true,
+        iconOverride: 'how_to_reg',
       }
     },
     {
@@ -39,6 +40,9 @@ const router = createRouter({
       path: '/calendar',
       name: 'calendar',
       component: CalendarView,
+      meta: {
+        iconOverride: 'calendar_month',
+      }
     },
   ]
 });

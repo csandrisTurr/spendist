@@ -7,17 +7,9 @@ import { useUserStore } from '@/stores/user';
 import router from '@/router';
 
 const userStore = useUserStore();
-const routeMap = {
-    'register': 'how_to_reg',
-    'calendar': 'calendar_month',
-};
 
 function capitalize(str: string): string {
     return `${str[0].toUpperCase()}${str.slice(1)}`;
-}
-
-function toIcon(str: keyof typeof routeMap): string {
-    return routeMap[str] || str;
 }
 
 const routes = computed(() => router.getRoutes().filter(x => {
@@ -37,7 +29,7 @@ const routes = computed(() => router.getRoutes().filter(x => {
                 :to="route.path"
                 class="flex items-center gap-2 px-4 py-2 rounded-md text-zinc-300 ease-in-out hover:bg-zinc-900 duration-300 text-lg"
             >
-                <Icon>{{ toIcon(route.name as keyof typeof routeMap) }}</Icon>
+                <Icon>{{ route.meta['iconOverride'] || route.name }}</Icon>
                 <span>{{ capitalize(route.name as string) }}</span>
             </RouterLink>
         </div>
