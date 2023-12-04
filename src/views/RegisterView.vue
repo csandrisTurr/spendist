@@ -43,6 +43,7 @@ function register() {
       <div class="flex flex-col gap-4">
         <Input v-model="emailText" type="text" name="email" id="email" placeholder="E-mail" />
         <Input v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
+        <Input v-model="passwordText" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" />
         <div class="flex flex-col gap-2">
           <Button @click="register">Register</Button>
           <span class="text-sm">Yes account? <RouterLink to="login" class="text-emerald-500">Log in!</RouterLink></span>
