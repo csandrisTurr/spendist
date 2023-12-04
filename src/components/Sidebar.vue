@@ -40,12 +40,13 @@ function logout() {
                 <span>{{ capitalize(route.name as string) }}</span>
             </RouterLink>
             <span 
+                @click="logout"
                 v-if="userStore.loggedIn()"
                 :class="classes"
                 class="-text-zinc-300 text-red-400 hover:bg-red-400/10 cursor-pointer justify-self-end mt-auto"
             >
                 <Icon>logout</Icon>
-                <span @click="logout">Log out</span>
+                <span>Log out</span>
             </span>
         </div>
     </nav>
