@@ -6,22 +6,33 @@ import { ref } from 'vue';
 import router from '@/router';
 import { useUserStore } from '@/stores/user';
 
+const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const userStore = useUserStore();
 
 const emailText = ref('');
 const passwordText = ref('');
 
-function validateEmail() {
+function validateEmptiness(): boolean {
+  if (!emailText.value || !passwordText.value) {
+    alert('Every field must contain a value.');
+    return false;
+  }
 
+  return true;
 }
 
-function validatePassword() {
+function validateEmail(): boolean {
+  if (!emailRegex.test(emailText.value)) {
+    alert('Invalid e-mail address.');
+    return false;
+  }
 
+  return true;
 }
 
 function login() {
-  validateEmail();
-  validatePassword();
+  if (!validateEmptiness()) return;
+  if (!validateEmail()) return;
 
   userStore.setUser({
     email: emailText,
@@ -41,7 +52,7 @@ function login() {
       </span>
       <hr class="border-zinc-700">
       <div class="flex flex-col gap-4">
-        <Input v-model="emailText" type="text" name="email" id="email" placeholder="E-mail" />
+        <Input v-model="emailText" type="email" name="email" id="email" placeholder="E-mail" />
         <Input v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
         <div class="flex flex-col gap-2">
           <Button @click="login">Login</Button>

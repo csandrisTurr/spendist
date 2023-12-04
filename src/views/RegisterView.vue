@@ -6,22 +6,45 @@ import router from '@/router';
 import { useUserStore } from '@/stores/user';
 import { ref } from 'vue';
 
+const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const userStore = useUserStore();
 
+const nameText = ref('');
 const emailText = ref('');
 const passwordText = ref('');
+const passwordConfirmationText = ref('');
 
-function validateEmail() {
+function validateEmptiness(): boolean {
+  if (!nameText.value || !emailText.value || !passwordText.value || !passwordConfirmationText.value) {
+    alert('Every field must contain a value.');
+    return false;
+  }
 
+  return true;
 }
 
-function validatePassword() {
+function validateEmail(): boolean {
+  if (!emailRegex.test(emailText.value)) {
+    alert('Invalid e-mail address.');
+    return false;
+  }
 
+  return true;
+}
+
+function validatePassword(): boolean {
+  if (passwordText.value != passwordConfirmationText.value) {
+    alert('The passwords are not the same.');
+    return false;
+  }
+
+  return true;
 }
 
 function register() {
-  validateEmail();
-  validatePassword();
+  if (!validateEmptiness()) return;
+  if (!validateEmail()) return;
+  if (!validatePassword()) return;
 
   userStore.setUser({
     email: emailText,
@@ -41,9 +64,10 @@ function register() {
       </span>
       <hr class="border-zinc-700">
       <div class="flex flex-col gap-4">
-        <Input v-model="emailText" type="text" name="email" id="email" placeholder="E-mail" />
+        <Input v-model="nameText" type="text" name="name" id="name" placeholder="Name" />
+        <Input v-model="emailText" type="email" name="email" id="email" placeholder="E-mail" />
         <Input v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
-        <Input v-model="passwordText" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" />
+        <Input v-model="passwordConfirmationText" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" />
         <div class="flex flex-col gap-2">
           <Button @click="register">Register</Button>
           <span class="text-sm">Yes account? <RouterLink to="login" class="text-emerald-500">Log in!</RouterLink></span>
