@@ -10,8 +10,11 @@ import VueAxios from 'vue-axios'
 
 const app = createApp(App)
 
+axios.defaults.baseURL = 'http://localhost:3000/'
+
 app.use(createPinia())
 app.use(router)
 app.use(VueAxios, axios)
+app.provide('axios', app.config.globalProperties.axios)
 
 app.mount('#app')
