@@ -64,10 +64,10 @@ function register() {
       </span>
       <hr class="border-zinc-700">
       <div class="flex flex-col gap-4">
-        <Input v-model="nameText" type="text" name="name" id="name" placeholder="Name" />
-        <Input v-model="emailText" type="email" name="email" id="email" placeholder="E-mail" />
-        <Input v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
-        <Input v-model="passwordConfirmationText" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" />
+        <Input @pressed-enter="register" v-model="nameText" type="text" name="name" id="name" placeholder="Name" />
+        <Input @pressed-enter="register" v-model="emailText" type="email" name="email" id="email" placeholder="E-mail" />
+        <Input @pressed-enter="register" v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
+        <Input @pressed-enter="register" v-model="passwordConfirmationText" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" />
         <div class="flex flex-col gap-2">
           <Button @click="register">Register</Button>
           <span class="text-sm">Yes account? <RouterLink to="login" class="text-emerald-500">Log in!</RouterLink></span>

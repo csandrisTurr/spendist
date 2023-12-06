@@ -61,8 +61,8 @@ async function login() {
       </span>
       <hr class="border-zinc-700">
       <div class="flex flex-col gap-4">
-        <Input v-model="emailText" type="email" name="email" id="email" placeholder="E-mail" />
-        <Input v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
+        <Input @pressed-enter="login" v-model="emailText" type="email" name="email" id="email" placeholder="E-mail" />
+        <Input @pressed-enter="login" v-model="passwordText" type="password" name="password" id="password" placeholder="Password" />
         <div class="flex flex-col gap-2">
           <Button @click="login">Login</Button>
           <span class="text-sm">No account? <RouterLink to="register" class="text-emerald-500">Register one!</RouterLink></span>
