@@ -4,10 +4,12 @@ import Icon from '@/components/Icon.vue';
 import Input from '@/components/Input.vue';
 import router from '@/router';
 import { useUserStore } from '@/stores/user';
-import { ref } from 'vue';
+import type { Axios } from 'axios';
+import { inject, ref } from 'vue';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const userStore = useUserStore();
+const axios: Axios = inject('axios')!;
 
 const nameText = ref('');
 const emailText = ref('');
@@ -41,14 +43,21 @@ function validatePassword(): boolean {
   return true;
 }
 
-function register() {
+async function register() {
   if (!validateEmptiness()) return;
   if (!validateEmail()) return;
   if (!validatePassword()) return;
 
+  await axios.post('users', {
+    name: nameText.value,
+    email: emailText.value,
+    passwd: passwordText.value,
+  });
+
+  const { ID, name, email, passwd } = (await axios.get(`users/email/eq/${emailText.value}`)).data[0];
+
   userStore.setUser({
-    email: emailText,
-    password: passwordText,
+    id: ID, name: name, email: email, password: passwd
   });
 
   router.push('/');
