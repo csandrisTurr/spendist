@@ -12,5 +12,9 @@ export const useUserStore = defineStore('user', () => {
     return currentUser.value != null;
   }
 
-  return { setUser, loggedIn };
+  function getUser(): any {
+    return currentUser.value;
+  }
+
+  return { setUser, loggedIn, getUser };
 })
