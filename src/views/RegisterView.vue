@@ -79,7 +79,7 @@ async function register() {
         <Input @pressed-enter="register" v-model="passwordConfirmationText" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" />
         <div class="flex flex-col gap-2">
           <Button @click="register">Register</Button>
-          <span class="text-sm">Yes account? <RouterLink to="login" class="text-emerald-500">Log in!</RouterLink></span>
+          <span class="text-sm">Already have an account? <RouterLink to="login" class="text-emerald-500">Log in!</RouterLink></span>
         </div>
       </div>
     </div>
