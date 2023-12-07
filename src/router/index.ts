@@ -3,6 +3,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import CalendarView from '../views/CalendarView.vue'
 import AnalyticsView from '../views/AnalyticsView.vue'
+import UserInfoView from '../views/UserInfoView.vue'
 import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
@@ -38,6 +39,14 @@ const router = createRouter({
         iconOverride: 'calendar_month',
       }
     },
+    {
+      path: '/user',
+      name: 'user',
+      component: UserInfoView,
+      meta: {
+        iconOverride: 'person',
+      }
+    }
   ]
 });
 
