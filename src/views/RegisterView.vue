@@ -60,7 +60,7 @@ async function register() {
     id: ID, name: name, email: email, password: passwd
   });
 
-  router.push('/');
+  router.push('/analytics');
 }
 </script>
 
