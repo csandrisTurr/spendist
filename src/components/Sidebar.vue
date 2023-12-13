@@ -52,7 +52,7 @@ function logout() {
     </nav>
 </template>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600&display=swap');
 
 .title {

@@ -66,7 +66,7 @@ let option: EChartsOption = {
   </main>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .chart {
   height: 600px;
 }

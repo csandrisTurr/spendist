@@ -15,7 +15,7 @@ const calendarOptions: CalendarOptions = {
   </main>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .fc-toolbar-title {
   @apply text-3xl font-bold #{!important};
 }

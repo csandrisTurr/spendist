@@ -29,7 +29,7 @@ const currentUser = userStore.getUser();
   </main>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 tr td {
   @apply p-4 border-zinc-800 border-[1px];
 }
