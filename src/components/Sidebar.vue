@@ -14,8 +14,8 @@ function capitalize(str: string): string {
 }
 
 const routes = computed(() => router.getRoutes().filter(x => {
-    return (x.meta['public'] && !userStore.loggedIn()) ||
-           (!x.meta['public'] && userStore.loggedIn());
+    return (x.meta['public'] && !userStore.loggedIn() && !x.meta['dontDisplay']) ||
+           (!x.meta['public'] && userStore.loggedIn() && !x.meta['dontDisplay']);
 }));
 
 function logout() {

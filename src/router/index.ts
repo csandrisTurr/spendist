@@ -4,6 +4,7 @@ import RegisterView from '../views/RegisterView.vue'
 import CalendarView from '../views/CalendarView.vue'
 import AnalyticsView from '../views/AnalyticsView.vue'
 import UserInfoView from '../views/UserInfoView.vue'
+import NewDataView from '../views/NewDataView.vue'
 import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
@@ -45,6 +46,15 @@ const router = createRouter({
       component: UserInfoView,
       meta: {
         iconOverride: 'person',
+      }
+    },
+    {
+      path: '/newdata',
+      name: 'newdata',
+      component: NewDataView,
+      meta: {
+        dontDisplay: true,
+        displayOnRoutes: ['analytics', 'calendar'],
       }
     }
   ]

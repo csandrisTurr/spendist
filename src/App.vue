@@ -13,9 +13,12 @@ function isAuthenticated(): boolean {
 
   <RouterView class="p-4" />
 
-  <div class="absolute right-8 bottom-8 h-16 w-16 bg-emerald-500 rounded-full flex justify-center items-center shadow">
+  <RouterLink
+    to="/newdata" 
+    class="absolute right-8 bottom-8 h-16 w-16 bg-emerald-500 rounded-full flex justify-center items-center shadow"
+    v-if="($router.getRoutes().find(x => x.name == 'newdata')?.meta['displayOnRoutes'] as any[]).includes($route.name)">
     <Icon class="text-3xl">add</Icon>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>
