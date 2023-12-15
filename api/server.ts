@@ -27,7 +27,17 @@ db.on('open', () => {
       date DATE,
       type TINYINT(1),
       amount INT(10),
-      tag VARCHAR(32)
+      tag INT,
+
+      FOREIGN KEY(userID) REFERENCES users(ID)
+    );
+
+    CREATE TABLE IF NOT EXISTS tags (
+      ID INTEGER PRIMARY KEY,
+      userID INT,
+      name VARCHAR(32),
+
+      FOREIGN KEY(userID) REFERENCES users(ID)
     );
     `)
 })
