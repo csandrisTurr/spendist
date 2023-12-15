@@ -25,8 +25,8 @@ db.on('open', () => {
       ID INTEGER PRIMARY KEY,
       userID INT,
       date DATE,
-      type VARCHAR(5),
-      amount INT(5),
+      type TINYINT(1),
+      amount INT(10),
       tag VARCHAR(32)
     );
     `)
