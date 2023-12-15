@@ -27,9 +27,10 @@ db.on('open', () => {
       date DATE,
       type TINYINT(1),
       amount INT(10),
-      tag INT,
+      tagID INT,
 
-      FOREIGN KEY(userID) REFERENCES users(ID)
+      FOREIGN KEY(userID) REFERENCES users(ID),
+      FOREIGN KEY(tagID) REFERENCES tags(ID)
     );
 
     CREATE TABLE IF NOT EXISTS tags (
