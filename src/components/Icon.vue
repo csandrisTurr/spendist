@@ -1,5 +1,5 @@
 <template>
     <span class="material-symbols-outlined">
-        <slot></slot>
+        <slot />
     </span> 
 </template>

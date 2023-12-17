@@ -17,5 +17,5 @@ const buttonTypeMap = {
     <button
         class="font-bold rounded-sm p-2 ease-out duration-200 flex items-center justify-center"
         :class="buttonTypeMap[type as keyof typeof buttonTypeMap]"
-        ><slot></slot></button>
+        ><slot /></button>
 </template>
