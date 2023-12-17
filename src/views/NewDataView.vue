@@ -50,10 +50,13 @@ function getTags() {
   <main class="w-full flex flex-col gap-8">
     <DataTable
       title="List of tags"
-      :data="tags.map(x => { return { ID: x.ID, name: x.name } })"
+      :data="tags"
       :descriptors="[
         {
           displayName: 'ID',
+        },
+        {
+          hidden: true,
         },
         {
           displayName: 'Name',
