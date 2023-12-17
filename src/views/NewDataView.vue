@@ -51,12 +51,41 @@ function getTags() {
     <DataTable
       title="List of tags"
       :data="tags.map(x => { return { ID: x.ID, name: x.name } })"
-      :headers="['ID', 'Name']"
+      :descriptors="[
+        {
+          displayName: 'ID',
+        },
+        {
+          displayName: 'Name',
+          editMode: 'text',
+        }
+      ]"
     />
     <DataTable
       title="List of items"
-      :data="items.map(x => { return { ID: x.ID, date: x.date, type: x.type, amount: x.amount, tag: x.tagID } })"
-      :headers="['ID', 'Date', 'Type', 'Amount', 'Tag']"
+      :data="items"
+      :descriptors="[
+        {
+          displayName: 'ID',
+        },
+        {
+          hidden: true,
+        },
+        {
+          displayName: 'Date',
+        },
+        {
+          displayName: 'Type',
+          transform: x => x ? 'Earning' : 'Spending',
+        },
+        {
+          displayName: 'Amount',
+        },
+        {
+          displayName: 'Tag',
+          transform: x => x ? x : '-',
+        },
+      ]"
     />
   </main>
 </template>

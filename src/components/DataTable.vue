@@ -3,15 +3,39 @@ import Input from '@/components/Input.vue';
 import Button from '@/components/Button.vue';
 import Icon from '@/components/Icon.vue';
 
-defineProps({
-    'title': String,
-    'data': {  
-        required: true,
-        type: Array<Object>,
-    },
-    'headers': Array<String>,
-    'displayMap': Object,
-});
+interface Descriptor {
+    hidden?: boolean; // Automatically false
+    displayName?: string;
+    editMode?: 'choice' | 'number' | 'text';
+    transform?: (item: any) => any;
+};
+
+interface Props {
+    title: string;
+    data: object[];
+    descriptors: Array<Descriptor>;
+}
+
+const props = defineProps<Props>();
+
+const shownDescriptors = props.descriptors.filter(x => !x.hidden);
+
+function getShownElems(index: number): any[] {
+    let elems: any[] = [];
+
+    Object.keys(props.data[index]).forEach((key: string, i: number) => {
+        if (!props.descriptors[i].hidden) {
+            if (props.descriptors[i].transform) {
+                elems.push(props.descriptors[i].transform!((props.data[index] as any)[key]));
+            } else {
+                elems.push((props.data[index] as any)[key]);
+            }
+        }
+    });
+
+    return elems;
+}
+
 </script>
 
 <template>
@@ -22,11 +46,11 @@ defineProps({
         </span>
         <table class="w-full">
             <tr>
-                <th v-for="header in headers" :key="(header as string)">{{ header }}</th>
+                <th v-for="desc in shownDescriptors" :key="desc.displayName">{{ desc.displayName }}</th>
                 <th>Actions</th>
             </tr>
-            <tr v-for="item in data" :key="(item as any)['ID']">
-                <td v-for="(v, k) in item" :key="k">{{ v }}</td>
+            <tr v-for="item, index in data" :key="(item as any)['ID']">
+                <td v-for="elem in getShownElems(index)" :key="elem">{{ elem }}</td>
                 <td class="flex gap-4">
                     <Button type="secondary"><Icon>edit</Icon></Button>
                     <Button type="warning"><Icon>delete</Icon></Button>
