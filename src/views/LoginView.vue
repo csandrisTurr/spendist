@@ -37,12 +37,14 @@ async function login() {
   if (!validateEmptiness()) return;
   if (!validateEmail()) return;
   
-  const { ID, name, email, passwd } = (await axios.get(`users/email/eq/${emailText.value}`)).data[0];
+  const data = (await axios.get(`users/email/eq/${emailText.value}`)).data;
 
-  if (passwd != passwordText.value) {
+  if (data.length == 0 || data[0].passwd != passwordText.value) {
     alert('Bad email or password');
     return;
   }
+
+  const { ID, name, email, passwd } = data[0];
 
   userStore.setUser({
     id: ID, name: name, email: email, password: passwd
